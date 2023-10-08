@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_photosFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_photosFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -52,6 +55,15 @@
             app:destination="@id/signInFragment" />
         <action
             android:id="@+id/action_splashFragment_to_photosFragment"
+            app:destination="@id/photosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/commentFragment"
+        android:name="com.aajogo.jogo.photosapp.ui.photos.comment.CommentFragment"
+        android:label="fragment_comment"
+        tools:layout="@layout/fragment_comment" >
+        <action
+            android:id="@+id/action_commentFragment_to_photosFragment"
             app:destination="@id/photosFragment" />
     </fragment>
 </navigation>

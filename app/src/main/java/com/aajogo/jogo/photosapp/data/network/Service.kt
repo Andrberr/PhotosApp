@@ -1,8 +1,9 @@
 package com.aajogo.jogo.photosapp.data.network
 
+import com.aajogo.jogo.photosapp.data.models.data.CommentDataResponse
+import com.aajogo.jogo.photosapp.data.models.data.CommentDto
 import com.aajogo.jogo.photosapp.data.models.data.ImageDataResponse
 import com.aajogo.jogo.photosapp.data.models.data.ImageDto
-import com.aajogo.jogo.photosapp.data.models.data.ImageResponse
 import com.aajogo.jogo.photosapp.data.models.data.ImagesResponse
 import com.aajogo.jogo.photosapp.data.models.data.UserDataResponse
 import com.aajogo.jogo.photosapp.data.models.data.UserDto
@@ -10,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface Service {
@@ -30,4 +32,11 @@ interface Service {
         @Header("Access-Token") token: String,
         @Body imageDto: ImageDto
     ): ImageDataResponse
+
+    @POST("api/image/")
+    suspend fun addComment(
+        @Header("Access-Token") token: String,
+        @Body commentDto: CommentDto,
+        @Path("imageId") imageId: Int
+    ): CommentDataResponse
 }
