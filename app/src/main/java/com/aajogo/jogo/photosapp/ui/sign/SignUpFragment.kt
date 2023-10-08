@@ -69,7 +69,7 @@ class SignUpFragment : Fragment() {
 
     private fun isPasswordValid(password: String): Boolean {
         if (password.length != PASSWORD_LENGTH) {
-            showText(getString(R.string.password_length_error))
+            binding.inputPassword.error = getString(R.string.password_length_error)
             return false
         }
         val hasDigit = password.any { it.isDigit() }
@@ -85,7 +85,7 @@ class SignUpFragment : Fragment() {
 
     private fun isLoginValid(login: String): Boolean {
         if (login.length < LOGIN_MIN_LENGTH) {
-            showText(getString(R.string.login_length_error))
+            binding.inputLogin.error = getString(R.string.login_length_error)
             return false
         }
         val matcher = loginPattern.matcher(login)
