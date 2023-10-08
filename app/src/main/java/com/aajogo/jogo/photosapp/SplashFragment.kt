@@ -28,7 +28,7 @@ class SplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel.login.observe(viewLifecycleOwner) { login ->
             val action =
-                if (login.isEmpty()) SplashFragmentDirections.actionSplashFragmentToSignInFragment()
+                if (login.isEmpty()) SplashFragmentDirections.actionSplashFragmentToPagerFragment()
                 else SplashFragmentDirections.actionSplashFragmentToPhotosFragment()
             findNavController().navigate(action)
         }
