@@ -39,6 +39,12 @@ class PhotosRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun deletePhoto(id: Int) {
+        runBlocking(Dispatchers.IO) {
+            service.deleteImage(prefsSource.getToken(), id)
+        }
+    }
+
     override suspend fun savePhotoToDataBase(photo: ImageModel) {
         withContext(Dispatchers.IO) {
             realm.write {
@@ -57,7 +63,7 @@ class PhotosRepositoryImpl @Inject constructor(
     override suspend fun deletePhotoFromDataBase(id: Int) {
         withContext(Dispatchers.IO) {
             realm.write {
-                val photo = this.query<ImageRealm>("_id == $0", id).find().first()
+                val photo = this.query<ImageRealm>("id == $0", id).find().first()
                 delete(photo)
             }
         }

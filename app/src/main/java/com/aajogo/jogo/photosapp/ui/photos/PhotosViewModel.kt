@@ -10,6 +10,7 @@ import com.aajogo.jogo.photosapp.domain.repository.PhotosRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,7 +27,12 @@ class PhotosViewModel @Inject constructor(
     private var _errorUpload = MutableLiveData<Boolean>()
     val errorUpload: LiveData<Boolean> = _errorUpload
 
+    private var _errorDelete = MutableLiveData<Boolean>()
+    val errorDelete: LiveData<Boolean> = _errorDelete
+
     var base64Img: String? = null
+    var deleteId = 0
+    var deletePosition = 0
 
     private val getHandler = CoroutineExceptionHandler { _, _ ->
         viewModelScope.launch {
@@ -37,6 +43,12 @@ class PhotosViewModel @Inject constructor(
     private val uploadHandler = CoroutineExceptionHandler { _, _ ->
         viewModelScope.launch {
             _errorUpload.value = true
+        }
+    }
+
+    private val deleteHandler = CoroutineExceptionHandler { _, _ ->
+        viewModelScope.launch {
+            _errorDelete.value = true
         }
     }
 
@@ -53,9 +65,22 @@ class PhotosViewModel @Inject constructor(
         }
     }
 
+    fun deletePhoto(id: Int) {
+        viewModelScope.launch(deleteHandler) {
+            repository.deletePhoto(id)
+            _errorDelete.value = false
+        }
+    }
+
     fun savePhotoToDataBase(photo: ImageModel) {
         viewModelScope.launch {
             repository.savePhotoToDataBase(photo)
+        }
+    }
+
+    fun deletePhotoFromDataBase() {
+        viewModelScope.launch {
+            repository.deletePhotoFromDataBase(deleteId)
         }
     }
 }
