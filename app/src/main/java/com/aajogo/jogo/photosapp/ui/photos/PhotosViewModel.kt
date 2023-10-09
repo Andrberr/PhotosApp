@@ -23,22 +23,32 @@ class PhotosViewModel @Inject constructor(
     private var _savePhoto = MutableLiveData<ImageModel>()
     val savePhoto: LiveData<ImageModel> = _savePhoto
 
+    private var _errorUpload = MutableLiveData<Boolean>()
+    val errorUpload: LiveData<Boolean> = _errorUpload
+
     var base64Img: String? = null
 
-    private val networkHandler = CoroutineExceptionHandler { _, _ ->
+    private val getHandler = CoroutineExceptionHandler { _, _ ->
         viewModelScope.launch {
             _photos.value = repository.getPhotosFromDataBase()
         }
     }
 
+    private val uploadHandler = CoroutineExceptionHandler { _, _ ->
+        viewModelScope.launch {
+            _errorUpload.value = true
+        }
+    }
+
     fun getPhotos() {
-        viewModelScope.launch(networkHandler) {
+        viewModelScope.launch(getHandler) {
             _photos.value = repository.getPhotos()
         }
     }
 
     fun uploadPhoto(photo: ImageData) {
-        viewModelScope.launch {
+        viewModelScope.launch(uploadHandler) {
+            _errorUpload.value = false
             _savePhoto.value = repository.uploadPhoto(photo)
         }
     }

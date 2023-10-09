@@ -17,4 +17,5 @@
     <string name="photo_image">Image</string>
     <string name="no_location_permission">No Location Permission!</string>
     <string name="tabs">Tabs</string>
+    <string name="network_error">Network Error!</string>
 </resources>

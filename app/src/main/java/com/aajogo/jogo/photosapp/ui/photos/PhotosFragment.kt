@@ -14,9 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.aajogo.jogo.photosapp.R
 import com.aajogo.jogo.photosapp.databinding.FragmentPhotosBinding
 import com.aajogo.jogo.photosapp.domain.models.ImageData
@@ -85,6 +87,7 @@ class PhotosFragment : Fragment() {
     }
 
     private val photosAdapter = PhotosAdapter()
+    private val photosLayoutManager = GridLayoutManager(context, COLUMNS)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -106,26 +109,54 @@ class PhotosFragment : Fragment() {
         }
         binding.photosRecycler.apply {
             adapter = photosAdapter
-            layoutManager = GridLayoutManager(context, COLUMNS)
+            layoutManager = photosLayoutManager
         }
+        addScrollListener()
+
         binding.addButton.setOnClickListener {
             takePhoto()
         }
     }
 
+    private fun addScrollListener() {
+        binding.photosRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy < 0 && photosLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                    binding.progressBar.isVisible = true
+                    photosViewModel.getPhotos()
+                }
+            }
+        })
+    }
+
     private fun initObservers() {
         photosViewModel.photos.observe(viewLifecycleOwner) { photos ->
+            binding.progressBar.isVisible = false
             photosAdapter.setPhotos(photos)
         }
         signViewModel.login.observe(viewLifecycleOwner) { login ->
             setMenuHeader(login)
         }
         photosViewModel.savePhoto.observe(viewLifecycleOwner) { photo ->
+            binding.progressBar.isVisible = false
+            photosAdapter.addPhoto(photo)
             photosViewModel.savePhotoToDataBase(photo)
         }
         signViewModel.isMenuInitialized.observe(viewLifecycleOwner) { isInitialized ->
             if (isInitialized) {
                 setMenu()
+            }
+        }
+
+        photosViewModel.errorUpload.observe(viewLifecycleOwner) { isError ->
+            if (isError) {
+                binding.progressBar.isVisible = false
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.network_error),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
@@ -169,6 +200,7 @@ class PhotosFragment : Fragment() {
         val date = getDate()
         val base64Img = photosViewModel.base64Img
         if (base64Img != null) {
+            binding.progressBar.isVisible = true
             photosViewModel.uploadPhoto(
                 ImageData(
                     base64Img,

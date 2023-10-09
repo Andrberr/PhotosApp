@@ -29,4 +29,9 @@ class PhotosAdapter : RecyclerView.Adapter<PhotosViewHolder>() {
         this.photos.addAll(photos)
         notifyDataSetChanged()
     }
+
+    fun addPhoto(photo: ImageModel) {
+        this.photos.add(0, photo)
+        notifyItemChanged(0)
+    }
 }

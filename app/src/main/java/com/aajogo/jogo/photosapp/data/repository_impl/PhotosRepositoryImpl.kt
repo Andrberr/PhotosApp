@@ -11,6 +11,7 @@ import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.RealmResults
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -29,7 +30,7 @@ class PhotosRepositoryImpl @Inject constructor(
     }
 
     override suspend fun uploadPhoto(photo: ImageData): ImageModel {
-        return withContext(Dispatchers.IO) {
+        return runBlocking(Dispatchers.IO) {
             val token = prefsSource.getToken()
             val response = service.uploadImage(token, imageMapper.mapDataToDto(photo))
             if (response.photoData != null) {
@@ -49,7 +50,7 @@ class PhotosRepositoryImpl @Inject constructor(
     override suspend fun getPhotosFromDataBase(): List<ImageModel> {
         return withContext(Dispatchers.IO) {
             val photos: RealmResults<ImageRealm> = realm.query<ImageRealm>().find()
-            photos.map { imageMapper.mapFromRealm(it) }
+            photos.map { imageMapper.mapFromRealm(it) }.reversed()
         }
     }
 
