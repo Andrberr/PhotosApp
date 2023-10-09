@@ -10,5 +10,4 @@ interface PhotosRepository {
     suspend fun savePhotoToDataBase(photo: ImageModel)
     suspend fun getPhotosFromDataBase(): List<ImageModel>
     suspend fun deletePhotoFromDataBase(id: Int)
-    suspend fun addComment(comment: String, imageId: Int): CommentModel
 }

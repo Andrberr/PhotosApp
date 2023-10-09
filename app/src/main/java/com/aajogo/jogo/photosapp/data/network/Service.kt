@@ -1,5 +1,6 @@
 package com.aajogo.jogo.photosapp.data.network
 
+import com.aajogo.jogo.photosapp.data.models.data.CommentDataListResponse
 import com.aajogo.jogo.photosapp.data.models.data.CommentDataResponse
 import com.aajogo.jogo.photosapp.data.models.data.CommentDto
 import com.aajogo.jogo.photosapp.data.models.data.ImageDataResponse
@@ -33,10 +34,17 @@ interface Service {
         @Body imageDto: ImageDto
     ): ImageDataResponse
 
-    @POST("api/image/")
+    @POST("api/image/{imageId}/comment")
     suspend fun addComment(
         @Header("Access-Token") token: String,
         @Body commentDto: CommentDto,
         @Path("imageId") imageId: Int
     ): CommentDataResponse
+
+    @GET("api/image/{imageId}/comment")
+    suspend fun getComments(
+        @Header("Access-Token") token: String,
+        @Path("imageId") imageId: Int,
+        @Query("page") page: Int
+    ): CommentDataListResponse
 }

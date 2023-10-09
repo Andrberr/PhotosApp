@@ -59,9 +59,9 @@
     </fragment>
     <fragment
         android:id="@+id/commentFragment"
-        android:name="com.aajogo.jogo.photosapp.ui.photos.comment.CommentFragment"
+        android:name="com.aajogo.jogo.photosapp.ui.photos.comment.CommentsFragment"
         android:label="fragment_comment"
-        tools:layout="@layout/fragment_comment" >
+        tools:layout="@layout/fragment_comments" >
         <action
             android:id="@+id/action_commentFragment_to_photosFragment"
             app:destination="@id/photosFragment" />

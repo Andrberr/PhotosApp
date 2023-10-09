@@ -21,7 +21,6 @@ class PhotosRepositoryImpl @Inject constructor(
     private val prefsSource: PrefsSource,
     private val realm: Realm,
     private val imageMapper: ImageMapper,
-    private val commentMapper: CommentMapper
 ) : PhotosRepository {
     override suspend fun getPhotos(): List<ImageModel> {
         return withContext(Dispatchers.IO) {
@@ -62,16 +61,6 @@ class PhotosRepositoryImpl @Inject constructor(
                 val photo = this.query<ImageRealm>("_id == $0", id).find().first()
                 delete(photo)
             }
-        }
-    }
-
-    override suspend fun addComment(comment: String, imageId: Int): CommentModel {
-        return withContext(Dispatchers.IO) {
-            val token = prefsSource.getToken()
-            val response = service.addComment(token, commentMapper(comment), imageId)
-            if (response.commentResponse != null) {
-                commentMapper.mapResponseToModel(response.commentResponse)
-            } else CommentModel.empty()
         }
     }
 }

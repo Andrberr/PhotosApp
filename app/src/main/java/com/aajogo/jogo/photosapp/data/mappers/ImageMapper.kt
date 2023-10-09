@@ -12,10 +12,18 @@ import javax.inject.Inject
 class ImageMapper @Inject constructor() {
 
     operator fun invoke(unmapped: ImageResponse) = with(unmapped) {
+        var photoDate = ""
+        var photoTime = ""
+        if (date != null) {
+            val dateTime = getDate(date.toLong()).split(" ")
+            photoDate = dateTime[0]
+            photoTime = dateTime[1]
+        }
         ImageModel(
             id = id ?: 0,
             url = url ?: "",
-            date = if (date != null) getDate(date.toLong()) else "",
+            date = photoDate,
+            time = photoTime,
             lat = lat ?: 0,
             lng = lng ?: 0,
         )
@@ -30,11 +38,12 @@ class ImageMapper @Inject constructor() {
         )
     }
 
-    fun mapToRealm(model: ImageModel): ImageRealm{
+    fun mapToRealm(model: ImageModel): ImageRealm {
         return ImageRealm().apply {
             id = model.id
             url = model.url
             date = model.date
+            time = model.time
             lat = model.lat
             lng = model.lng
         }
@@ -42,13 +51,13 @@ class ImageMapper @Inject constructor() {
 
     fun mapFromRealm(realm: ImageRealm) = with(realm) {
         ImageModel(
-            id, url, date, lat, lng
+            id, url, date, time, lat, lng
         )
     }
 
     private fun getDate(timestamp: Long): String {
         val cal = Calendar.getInstance(Locale.ENGLISH)
         cal.timeInMillis = timestamp * 1000L
-        return DateFormat.format("dd.MM.yyyy", cal).toString()
+        return DateFormat.format("dd.MM.yyyy HH:mm:ss", cal).toString()
     }
 }

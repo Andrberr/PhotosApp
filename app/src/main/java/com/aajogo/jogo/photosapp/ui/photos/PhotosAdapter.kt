@@ -10,7 +10,7 @@ import com.aajogo.jogo.photosapp.domain.models.ImageModel
 class PhotosAdapter : RecyclerView.Adapter<PhotosViewHolder>() {
 
     private val photos = mutableListOf<ImageModel>()
-    var itemClick: () -> Unit = {}
+    var itemClick: (photo: ImageModel) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotosViewHolder {
         val binding = PhotoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)

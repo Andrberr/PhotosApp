@@ -1,7 +1,9 @@
 package com.aajogo.jogo.photosapp.di
 
+import com.aajogo.jogo.photosapp.data.repository_impl.CommentRepositoryImpl
 import com.aajogo.jogo.photosapp.data.repository_impl.PhotosRepositoryImpl
 import com.aajogo.jogo.photosapp.data.repository_impl.SignRepositoryImpl
+import com.aajogo.jogo.photosapp.domain.repository.CommentRepository
 import com.aajogo.jogo.photosapp.domain.repository.PhotosRepository
 import com.aajogo.jogo.photosapp.domain.repository.SignRepository
 import dagger.Binds
@@ -17,4 +19,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun getPhotosRepository(impl: PhotosRepositoryImpl): PhotosRepository
+
+    @Binds
+    abstract fun getCommentRepository(impl: CommentRepositoryImpl): CommentRepository
 }
