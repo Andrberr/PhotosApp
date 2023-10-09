@@ -1,8 +1,10 @@
 package com.aajogo.jogo.photosapp.data.network
 
+import com.aajogo.jogo.photosapp.data.models.data.CommentDataListResponse
+import com.aajogo.jogo.photosapp.data.models.data.CommentDataResponse
+import com.aajogo.jogo.photosapp.data.models.data.CommentDto
 import com.aajogo.jogo.photosapp.data.models.data.ImageDataResponse
 import com.aajogo.jogo.photosapp.data.models.data.ImageDto
-import com.aajogo.jogo.photosapp.data.models.data.ImageResponse
 import com.aajogo.jogo.photosapp.data.models.data.ImagesResponse
 import com.aajogo.jogo.photosapp.data.models.data.UserDataResponse
 import com.aajogo.jogo.photosapp.data.models.data.UserDto
@@ -38,4 +40,25 @@ interface Service {
         @Header("Access-Token") token: String,
         @Path("id") id: Int
     )
+
+    @POST("api/image/{imageId}/comment")
+    suspend fun addComment(
+        @Header("Access-Token") token: String,
+        @Body commentDto: CommentDto,
+        @Path("imageId") imageId: Int
+    ): CommentDataResponse
+
+    @POST("api/image/{imageId}/comment/{commentId}")
+    suspend fun deleteComment(
+        @Header("Access-Token") token: String,
+        @Path("imageId") imageId: Int,
+        @Path("commentId") commentId: Int
+    )
+
+    @GET("api/image/{imageId}/comment")
+    suspend fun getComments(
+        @Header("Access-Token") token: String,
+        @Path("imageId") imageId: Int,
+        @Query("page") page: Int
+    ): CommentDataListResponse
 }

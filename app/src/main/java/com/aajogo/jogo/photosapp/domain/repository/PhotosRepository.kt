@@ -1,5 +1,6 @@
 package com.aajogo.jogo.photosapp.domain.repository
 
+import com.aajogo.jogo.photosapp.domain.models.CommentModel
 import com.aajogo.jogo.photosapp.domain.models.ImageData
 import com.aajogo.jogo.photosapp.domain.models.ImageModel
 

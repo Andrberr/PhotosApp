@@ -1,14 +1,12 @@
 package com.aajogo.jogo.photosapp.domain.models
 
-data class ImageModel(
+data class CommentModel(
     val id: Int,
-    val url: String,
     val date: String,
     val time: String,
-    val lat: Int,
-    val lng: Int
+    val text: String
 ) {
     companion object {
-        fun empty() = ImageModel(0, "", "", "", 0, 0)
+        fun empty() = CommentModel(0, "", "", "")
     }
 }

@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_photosFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_photosFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -53,6 +56,15 @@
         tools:layout="@layout/view_pager">
         <action
             android:id="@+id/action_pagerFragment_to_photosFragment"
+            app:destination="@id/photosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/commentFragment"
+        android:name="com.aajogo.jogo.photosapp.ui.photos.comment.CommentsFragment"
+        android:label="fragment_comment"
+        tools:layout="@layout/fragment_comments" >
+        <action
+            android:id="@+id/action_commentFragment_to_photosFragment"
             app:destination="@id/photosFragment" />
     </fragment>
 </navigation>

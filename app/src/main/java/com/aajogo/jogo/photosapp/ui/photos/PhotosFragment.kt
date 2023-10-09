@@ -17,12 +17,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.aajogo.jogo.photosapp.R
 import com.aajogo.jogo.photosapp.databinding.FragmentPhotosBinding
 import com.aajogo.jogo.photosapp.domain.models.ImageData
+import com.aajogo.jogo.photosapp.domain.models.ImageModel
 import com.aajogo.jogo.photosapp.ui.MainActivity
+import com.aajogo.jogo.photosapp.ui.photos.comment.CommentsViewModel
 import com.aajogo.jogo.photosapp.ui.sign.SignViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -42,6 +45,7 @@ class PhotosFragment : Fragment() {
 
     private val photosViewModel by activityViewModels<PhotosViewModel>()
     private val signViewModel by activityViewModels<SignViewModel>()
+    private val commentsViewModel by activityViewModels<CommentsViewModel>()
 
     private val locationRequest = createLocationRequest()
 
@@ -104,8 +108,8 @@ class PhotosFragment : Fragment() {
     }
 
     private fun initViews() {
-        photosAdapter.itemClick = {
-
+        photosAdapter.itemClick = { photo ->
+            navigateToComments(photo)
         }
         photosAdapter.itemDelete = { id, position ->
             binding.progressBar.isVisible = true
@@ -264,6 +268,12 @@ class PhotosFragment : Fragment() {
             getString(R.string.network_error),
             Toast.LENGTH_SHORT
         ).show()
+    }
+
+    private fun navigateToComments(photo: ImageModel) {
+        commentsViewModel.setPhoto(photo)
+        val action = PhotosFragmentDirections.actionPhotosFragmentToCommentFragment()
+        findNavController().navigate(action)
     }
 
     override fun onDestroyView() {

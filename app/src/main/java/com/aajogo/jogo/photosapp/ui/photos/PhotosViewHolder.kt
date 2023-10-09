@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 
 class PhotosViewHolder(
     private val binding: PhotoLayoutBinding,
-    private val itemClick: () -> Unit,
+    private val itemClick: (photo: ImageModel) -> Unit,
     private val itemDelete: (id: Int, position: Int) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
     fun bind(photo: ImageModel, position: Int) {
@@ -17,6 +17,9 @@ class PhotosViewHolder(
             .load(photo.url)
             .into(binding.imageView)
         binding.dateView.text = photo.date
+        itemView.setOnClickListener {
+            itemClick(photo)
+        }
         itemView.setOnLongClickListener {
             showDeleteConfirmationDialog(photo.id, position)
             true
