@@ -48,7 +48,7 @@ interface Service {
         @Path("imageId") imageId: Int
     ): CommentDataResponse
 
-    @POST("api/image/{imageId}/comment/{commentId}")
+    @DELETE("api/image/{imageId}/comment/{commentId}")
     suspend fun deleteComment(
         @Header("Access-Token") token: String,
         @Path("imageId") imageId: Int,

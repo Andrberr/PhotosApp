@@ -7,11 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aajogo.jogo.photosapp.R
 import com.aajogo.jogo.photosapp.databinding.FragmentCommentsBinding
 import com.aajogo.jogo.photosapp.domain.models.ImageModel
+import com.aajogo.jogo.photosapp.ui.MainActivity
+import com.aajogo.jogo.photosapp.ui.photos.PhotosFragment
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -42,24 +46,34 @@ class CommentsFragment : Fragment() {
             commentsAdapter.setComments(comments)
         }
         commentsViewModel.photo.observe(viewLifecycleOwner) { photo ->
-            commentsViewModel.getComments(photo.id)
+            commentsViewModel.imageId = photo.id
+            commentsViewModel.getComments()
             initViews(photo)
         }
         commentsViewModel.addError.observe(viewLifecycleOwner) { isError ->
-            if (isError) showError()
+            updateComments(isError)
         }
         commentsViewModel.deleteError.observe(viewLifecycleOwner) { isError ->
-            if (isError) showError()
+            updateComments(isError)
         }
+        commentsViewModel.getError.observe(viewLifecycleOwner) { isError ->
+            binding.lottieError.isVisible = isError
+        }
+    }
+
+    private fun updateComments(isError: Boolean) {
+        if (isError) showError()
+        else commentsViewModel.getComments()
     }
 
     @SuppressLint("SetTextI18n")
     private fun initViews(photo: ImageModel) {
         with(binding) {
+            setBarTitle()
             loadPhoto(photo.url)
-            dateView.text = photo.date + " " + photo.time
+            dateView.text = photo.date + SPACE + photo.time
             commentsAdapter.itemDelete = { commentId ->
-                commentsViewModel.deleteComment(photo.id, commentId)
+                commentsViewModel.deleteComment(commentId)
             }
             commentsRecycler.apply {
                 adapter = commentsAdapter
@@ -70,6 +84,12 @@ class CommentsFragment : Fragment() {
                     commentsViewModel.addComment(commentEdit.text.toString(), photo.id)
                 }
             }
+        }
+    }
+
+    private fun setBarTitle() {
+        activity?.let {
+            (it as MainActivity).setBarTitle(BAR_TITLE)
         }
     }
 
@@ -84,8 +104,18 @@ class CommentsFragment : Fragment() {
             .show()
     }
 
+    private fun navigateToPhotos() {
+        val action = CommentsFragmentDirections.actionCommentFragmentToPhotosFragment()
+        findNavController().navigate(action)
+    }
+
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    companion object {
+        private const val BAR_TITLE = ""
+        private const val SPACE = " "
     }
 }

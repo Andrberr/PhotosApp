@@ -3,6 +3,7 @@ package com.aajogo.jogo.photosapp.ui.photos.comment
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
+import com.aajogo.jogo.photosapp.R
 import com.aajogo.jogo.photosapp.databinding.CommentLayoutBinding
 import com.aajogo.jogo.photosapp.domain.models.CommentModel
 
@@ -22,20 +23,17 @@ class CommentsViewHolder(
         }
     }
 
-    private fun showDeleteConfirmationDialog(commentId: Int) {
+    private fun showDeleteConfirmationDialog(id: Int) {
         val alertDialogBuilder = AlertDialog.Builder(itemView.context)
-        alertDialogBuilder.setTitle("")
-        alertDialogBuilder.setMessage("")
+        alertDialogBuilder.setMessage(itemView.context.getString(R.string.delete_question_comment))
 
-        alertDialogBuilder.setPositiveButton("") { _, _ ->
-            itemDelete(commentId)
+        alertDialogBuilder.setPositiveButton(itemView.context.getString(R.string.yes)) { _, _ ->
+            itemDelete(id)
         }
 
-        alertDialogBuilder.setNegativeButton("") { dialog, _ ->
+        alertDialogBuilder.setNegativeButton(itemView.context.getString(R.string.no)) { dialog, _ ->
             dialog.cancel()
         }
-
         alertDialogBuilder.show()
     }
-
 }

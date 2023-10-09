@@ -29,6 +29,11 @@ class CommentsViewModel @Inject constructor(
     private var _deleteError = MutableLiveData<Boolean>()
     val deleteError: LiveData<Boolean> = _deleteError
 
+    private var _getError = MutableLiveData<Boolean>()
+    val getError: LiveData<Boolean> = _getError
+
+    var imageId = 0
+
     private val addHandler = CoroutineExceptionHandler { _, _ ->
         viewModelScope.launch {
             _addError.value = true
@@ -41,23 +46,30 @@ class CommentsViewModel @Inject constructor(
         }
     }
 
+    private val getHandler = CoroutineExceptionHandler { _, _ ->
+        viewModelScope.launch {
+            _getError.value = true
+        }
+    }
+
     fun addComment(comment: String, imageId: Int) {
         viewModelScope.launch(addHandler) {
-            _addError.value = false
             repository.addComment(comment, imageId)
+            _addError.value = false
         }
     }
 
-    fun deleteComment(imageId: Int, commentId: Int) {
+    fun deleteComment(commentId: Int) {
         viewModelScope.launch(deleteHandler) {
-            _deleteError.value = false
             repository.deleteComment(imageId, commentId)
+            _deleteError.value = false
         }
     }
 
-    fun getComments(imageId: Int) {
-        viewModelScope.launch {
+    fun getComments() {
+        viewModelScope.launch(getHandler) {
             _comments.value = repository.getComments(imageId)
+            _getError.value = false
         }
     }
 

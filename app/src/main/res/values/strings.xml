@@ -19,6 +19,7 @@
     <string name="tabs">Tabs</string>
     <string name="network_error">Network Error!</string>
     <string name="delete_question">Are you sure you want to delete photo?</string>
+    <string name="delete_question_comment">Are you sure you want to delete comment?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 </resources>

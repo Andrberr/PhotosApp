@@ -10,7 +10,6 @@ import com.aajogo.jogo.photosapp.domain.repository.PhotosRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -60,8 +59,8 @@ class PhotosViewModel @Inject constructor(
 
     fun uploadPhoto(photo: ImageData) {
         viewModelScope.launch(uploadHandler) {
-            _errorUpload.value = false
             _savePhoto.value = repository.uploadPhoto(photo)
+            _errorUpload.value = false
         }
     }
 

@@ -16,7 +16,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -91,7 +90,7 @@ class PhotosFragment : Fragment() {
     }
 
     private val photosAdapter = PhotosAdapter()
-    private val photosLayoutManager = GridLayoutManager(context, COLUMNS)
+    private lateinit var photosLayoutManager: GridLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -118,6 +117,7 @@ class PhotosFragment : Fragment() {
             photosViewModel.deletePhoto(id)
             photosViewModel.getPhotos()
         }
+        photosLayoutManager = GridLayoutManager(context, COLUMNS)
         binding.photosRecycler.apply {
             adapter = photosAdapter
             layoutManager = photosLayoutManager
@@ -198,7 +198,7 @@ class PhotosFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
-            val bitmap = data?.extras?.get("data") as Bitmap
+            val bitmap = data?.extras?.get(DATA) as Bitmap
 
             Base64Image.encode(bitmap) { base64 ->
                 base64?.let { base64Img ->
@@ -229,7 +229,7 @@ class PhotosFragment : Fragment() {
     private fun getDate(): Int {
         val currentTimeMillis = System.currentTimeMillis()
         val date = Date(currentTimeMillis)
-        val unixTimestamp = date.time / 1000
+        val unixTimestamp = date.time / MILLISECONDS
         return unixTimestamp.toInt()
     }
 
@@ -243,9 +243,8 @@ class PhotosFragment : Fragment() {
     }
 
     private fun createLocationRequest(): LocationRequest {
-        val timeInterval = 1000L
         return LocationRequest.Builder(
-            Priority.PRIORITY_HIGH_ACCURACY, timeInterval
+            Priority.PRIORITY_HIGH_ACCURACY, TIME_INTERVAL
         ).build()
     }
 
@@ -285,5 +284,8 @@ class PhotosFragment : Fragment() {
         private const val COLUMNS = 3
         private const val BAR_TITLE = ""
         private const val REQUEST_CODE = 123
+        private const val DATA = "data"
+        private const val MILLISECONDS = 1000
+        private const val TIME_INTERVAL = 1000L
     }
 }
