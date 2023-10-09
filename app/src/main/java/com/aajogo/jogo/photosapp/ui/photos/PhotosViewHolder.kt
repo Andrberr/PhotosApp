@@ -13,6 +13,6 @@ class PhotosViewHolder(
         Glide.with(itemView.context)
             .load(photo.url)
             .into(binding.imageView)
-        binding.dateView.text = photo.date.toString()
+        binding.dateView.text = photo.date
     }
 }
