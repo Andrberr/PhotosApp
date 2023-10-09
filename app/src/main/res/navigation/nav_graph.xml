@@ -9,21 +9,13 @@
         android:id="@+id/signInFragment"
         android:name="com.aajogo.jogo.photosapp.ui.sign.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in">
-        <action
-            android:id="@+id/action_signInFragment_to_photosFragment"
-            app:destination="@id/photosFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_sign_in"/>
 
     <fragment
         android:id="@+id/signUpFragment"
         android:name="com.aajogo.jogo.photosapp.ui.sign.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up">
-        <action
-            android:id="@+id/action_signUpFragment_to_photosFragment"
-            app:destination="@id/photosFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_sign_up"/>
     <fragment
         android:id="@+id/photosFragment"
         android:name="com.aajogo.jogo.photosapp.ui.photos.PhotosFragment"
@@ -58,5 +50,9 @@
         android:id="@+id/pagerFragment"
         android:name="com.aajogo.jogo.photosapp.ui.sign.PagerFragment"
         android:label="PagerFragment"
-        tools:layout="@layout/view_pager"/>
+        tools:layout="@layout/view_pager">
+        <action
+            android:id="@+id/action_pagerFragment_to_photosFragment"
+            app:destination="@id/photosFragment" />
+    </fragment>
 </navigation>
