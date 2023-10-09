@@ -98,7 +98,7 @@ class SignUpFragment : Fragment() {
     }
 
     private fun navigateToPhotos() {
-        val action = SignUpFragmentDirections.actionSignUpFragmentToPhotosFragment()
+        val action = PagerFragmentDirections.actionPagerFragmentToPhotosFragment()
         findNavController().navigate(action)
     }
 
