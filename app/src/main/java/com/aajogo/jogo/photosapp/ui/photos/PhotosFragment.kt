@@ -40,7 +40,7 @@ class PhotosFragment : Fragment() {
     private var _binding: FragmentPhotosBinding? = null
     private val binding get() = _binding!!
 
-    private val photosViewModel by viewModels<PhotosViewModel>()
+    private val photosViewModel by activityViewModels<PhotosViewModel>()
     private val signViewModel by activityViewModels<SignViewModel>()
 
     private val locationRequest = createLocationRequest()
@@ -107,6 +107,13 @@ class PhotosFragment : Fragment() {
         photosAdapter.itemClick = {
 
         }
+        photosAdapter.itemDelete = { id, position ->
+            binding.progressBar.isVisible = true
+            photosViewModel.deletePosition = position
+            photosViewModel.deleteId = id
+            photosViewModel.deletePhoto(id)
+            photosViewModel.getPhotos()
+        }
         binding.photosRecycler.apply {
             adapter = photosAdapter
             layoutManager = photosLayoutManager
@@ -122,7 +129,7 @@ class PhotosFragment : Fragment() {
         binding.photosRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                if (dy < 0 && photosLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
+                if (photosLayoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
                     binding.progressBar.isVisible = true
                     photosViewModel.getPhotos()
                 }
@@ -140,7 +147,6 @@ class PhotosFragment : Fragment() {
         }
         photosViewModel.savePhoto.observe(viewLifecycleOwner) { photo ->
             binding.progressBar.isVisible = false
-            photosAdapter.addPhoto(photo)
             photosViewModel.savePhotoToDataBase(photo)
         }
         signViewModel.isMenuInitialized.observe(viewLifecycleOwner) { isInitialized ->
@@ -148,15 +154,18 @@ class PhotosFragment : Fragment() {
                 setMenu()
             }
         }
-
         photosViewModel.errorUpload.observe(viewLifecycleOwner) { isError ->
             if (isError) {
                 binding.progressBar.isVisible = false
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.network_error),
-                    Toast.LENGTH_SHORT
-                ).show()
+                showError()
+            }
+        }
+        photosViewModel.errorDelete.observe(viewLifecycleOwner) { isError ->
+            binding.progressBar.isVisible = false
+            if (isError) {
+                showError()
+            } else {
+                photosViewModel.deletePhotoFromDataBase()
             }
         }
     }
@@ -209,6 +218,7 @@ class PhotosFragment : Fragment() {
                     location.second.toInt()
                 )
             )
+            photosViewModel.getPhotos()
         }
     }
 
@@ -246,6 +256,14 @@ class PhotosFragment : Fragment() {
 
     private fun stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
+    }
+
+    private fun showError() {
+        Toast.makeText(
+            requireContext(),
+            getString(R.string.network_error),
+            Toast.LENGTH_SHORT
+        ).show()
     }
 
     override fun onDestroyView() {

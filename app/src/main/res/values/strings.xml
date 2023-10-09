@@ -18,4 +18,7 @@
     <string name="no_location_permission">No Location Permission!</string>
     <string name="tabs">Tabs</string>
     <string name="network_error">Network Error!</string>
+    <string name="delete_question">Are you sure you want to delete photo?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

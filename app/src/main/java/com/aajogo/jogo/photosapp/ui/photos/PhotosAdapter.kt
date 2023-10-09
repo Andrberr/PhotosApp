@@ -11,16 +11,17 @@ class PhotosAdapter : RecyclerView.Adapter<PhotosViewHolder>() {
 
     private val photos = mutableListOf<ImageModel>()
     var itemClick: () -> Unit = {}
+    var itemDelete: (id: Int, position: Int) -> Unit = { _, _ -> }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotosViewHolder {
         val binding = PhotoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PhotosViewHolder(binding, itemClick)
+        return PhotosViewHolder(binding, itemClick, itemDelete)
     }
 
     override fun getItemCount(): Int = photos.size
 
     override fun onBindViewHolder(holder: PhotosViewHolder, position: Int) {
-        holder.bind(photos[position])
+        holder.bind(photos[position], position)
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -28,10 +29,5 @@ class PhotosAdapter : RecyclerView.Adapter<PhotosViewHolder>() {
         this.photos.clear()
         this.photos.addAll(photos)
         notifyDataSetChanged()
-    }
-
-    fun addPhoto(photo: ImageModel) {
-        this.photos.add(0, photo)
-        notifyItemChanged(0)
     }
 }
