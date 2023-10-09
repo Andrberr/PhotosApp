@@ -6,6 +6,7 @@ import com.aajogo.jogo.photosapp.data.sources.PrefsSource
 import com.aajogo.jogo.photosapp.domain.models.CommentModel
 import com.aajogo.jogo.photosapp.domain.repository.CommentRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -15,12 +16,18 @@ class CommentRepositoryImpl @Inject constructor(
     private val mapper: CommentMapper
 ) : CommentRepository {
     override suspend fun addComment(comment: String, imageId: Int): CommentModel {
-        return withContext(Dispatchers.IO) {
+        return runBlocking(Dispatchers.IO) {
             val token = prefsSource.getToken()
             val response = service.addComment(token, mapper(comment), imageId)
             if (response.commentResponse != null) {
                 mapper.mapResponseToModel(response.commentResponse)
             } else CommentModel.empty()
+        }
+    }
+
+    override suspend fun deleteComment(imageId: Int, commentId: Int) {
+        return runBlocking(Dispatchers.IO) {
+            service.deleteComment(prefsSource.getToken(), imageId, commentId)
         }
     }
 

@@ -10,11 +10,11 @@ import com.aajogo.jogo.photosapp.domain.models.CommentModel
 class CommentsAdapter : RecyclerView.Adapter<CommentsViewHolder>() {
 
     private val comments = mutableListOf<CommentModel>()
-
+    var itemDelete: (commentId: Int) -> Unit = { }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentsViewHolder {
         val binding =
             CommentLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return CommentsViewHolder(binding)
+        return CommentsViewHolder(binding, itemDelete)
     }
 
     override fun getItemCount(): Int = comments.size

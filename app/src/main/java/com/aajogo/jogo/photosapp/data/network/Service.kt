@@ -41,6 +41,13 @@ interface Service {
         @Path("imageId") imageId: Int
     ): CommentDataResponse
 
+    @POST("api/image/{imageId}/comment/{commentId}")
+    suspend fun deleteComment(
+        @Header("Access-Token") token: String,
+        @Path("imageId") imageId: Int,
+        @Path("commentId") commentId: Int
+    )
+
     @GET("api/image/{imageId}/comment")
     suspend fun getComments(
         @Header("Access-Token") token: String,

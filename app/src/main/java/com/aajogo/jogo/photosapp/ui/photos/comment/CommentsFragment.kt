@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.aajogo.jogo.photosapp.R
@@ -44,6 +45,12 @@ class CommentsFragment : Fragment() {
             commentsViewModel.getComments(photo.id)
             initViews(photo)
         }
+        commentsViewModel.addError.observe(viewLifecycleOwner) { isError ->
+            if (isError) showError()
+        }
+        commentsViewModel.deleteError.observe(viewLifecycleOwner) { isError ->
+            if (isError) showError()
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -51,6 +58,9 @@ class CommentsFragment : Fragment() {
         with(binding) {
             loadPhoto(photo.url)
             dateView.text = photo.date + " " + photo.time
+            commentsAdapter.itemDelete = { commentId ->
+                commentsViewModel.deleteComment(photo.id, commentId)
+            }
             commentsRecycler.apply {
                 adapter = commentsAdapter
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -67,6 +77,11 @@ class CommentsFragment : Fragment() {
         Glide.with(requireContext())
             .load(url)
             .into(binding.photoView)
+    }
+
+    private fun showError() {
+        Toast.makeText(requireContext(), getString(R.string.network_error), Toast.LENGTH_SHORT)
+            .show()
     }
 
     override fun onDestroyView() {

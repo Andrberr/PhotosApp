@@ -16,4 +16,5 @@
     <string name="empty_password">Password is empty!</string>
     <string name="photo_image">Image</string>
     <string name="no_location_permission">No Location Permission!</string>
+    <string name="network_error">Network Error!</string>
 </resources>
