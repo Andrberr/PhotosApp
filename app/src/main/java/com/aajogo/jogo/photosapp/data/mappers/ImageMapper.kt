@@ -6,6 +6,7 @@ import com.aajogo.jogo.photosapp.data.models.data.ImageResponse
 import com.aajogo.jogo.photosapp.data.models.realm.ImageRealm
 import com.aajogo.jogo.photosapp.domain.models.ImageData
 import com.aajogo.jogo.photosapp.domain.models.ImageModel
+import com.yandex.mapkit.geometry.Point
 import java.util.*
 import javax.inject.Inject
 
@@ -24,8 +25,8 @@ class ImageMapper @Inject constructor() {
             url = url ?: "",
             date = photoDate,
             time = photoTime,
-            lat = lat ?: 0,
-            lng = lng ?: 0,
+            lat = lat ?: 0.0,
+            lng = lng ?: 0.0,
         )
     }
 
@@ -54,6 +55,8 @@ class ImageMapper @Inject constructor() {
             id, url, date, time, lat, lng
         )
     }
+
+    fun getMarker(photo: ImageModel) = Point(photo.lat, photo.lng)
 
     private fun getDate(timestamp: Long): String {
         val cal = Calendar.getInstance(Locale.ENGLISH)

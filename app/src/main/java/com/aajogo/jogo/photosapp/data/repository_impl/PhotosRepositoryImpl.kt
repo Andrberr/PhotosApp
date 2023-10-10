@@ -1,14 +1,13 @@
 package com.aajogo.jogo.photosapp.data.repository_impl
 
-import com.aajogo.jogo.photosapp.data.mappers.CommentMapper
 import com.aajogo.jogo.photosapp.data.mappers.ImageMapper
 import com.aajogo.jogo.photosapp.data.models.realm.ImageRealm
 import com.aajogo.jogo.photosapp.data.network.Service
 import com.aajogo.jogo.photosapp.data.sources.PrefsSource
-import com.aajogo.jogo.photosapp.domain.models.CommentModel
 import com.aajogo.jogo.photosapp.domain.models.ImageData
 import com.aajogo.jogo.photosapp.domain.models.ImageModel
 import com.aajogo.jogo.photosapp.domain.repository.PhotosRepository
+import com.yandex.mapkit.geometry.Point
 import io.realm.kotlin.Realm
 import io.realm.kotlin.ext.query
 import io.realm.kotlin.query.RealmResults
@@ -68,6 +67,13 @@ class PhotosRepositoryImpl @Inject constructor(
                 val photo = this.query<ImageRealm>("id == $0", id).find().first()
                 delete(photo)
             }
+        }
+    }
+
+    override suspend fun getMarkers(): List<Point> {
+        return withContext(Dispatchers.IO) {
+            val photos = getPhotosFromDataBase()
+            photos.map { imageMapper.getMarker(it) }
         }
     }
 }
