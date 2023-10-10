@@ -36,6 +36,7 @@ class MapFragment : BaseFragment<FragmentMapBinding>() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        onBackPressed()
         MapKitInitializer.initialize(BuildConfig.YANDEX_API_KEY, requireContext())
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         return binding.root
