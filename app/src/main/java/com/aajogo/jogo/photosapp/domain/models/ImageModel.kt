@@ -5,10 +5,10 @@ data class ImageModel(
     val url: String,
     val date: String,
     val time: String,
-    val lat: Int,
-    val lng: Int
+    val lat: Double,
+    val lng: Double
 ) {
     companion object {
-        fun empty() = ImageModel(0, "", "", "", 0, 0)
+        fun empty() = ImageModel(0, "", "", "", 0.0, 0.0)
     }
 }

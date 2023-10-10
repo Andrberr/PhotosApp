@@ -97,10 +97,6 @@ class MainActivity : AppCompatActivity() {
         headerView.findViewById<TextView>(R.id.usernameView).text = header
     }
 
-    fun setBarTitle(title: String) {
-        binding.toolbar.title = title
-    }
-
     override fun onDestroy() {
         viewModel.setMenuInitialized(false)
         super.onDestroy()

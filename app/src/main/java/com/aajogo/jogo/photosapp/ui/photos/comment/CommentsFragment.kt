@@ -69,7 +69,6 @@ class CommentsFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun initViews(photo: ImageModel) {
         with(binding) {
-            setBarTitle()
             loadPhoto(photo.url)
             dateView.text = photo.date + SPACE + photo.time
             commentsAdapter.itemDelete = { commentId ->
@@ -84,12 +83,6 @@ class CommentsFragment : Fragment() {
                     commentsViewModel.addComment(commentEdit.text.toString(), photo.id)
                 }
             }
-        }
-    }
-
-    private fun setBarTitle() {
-        activity?.let {
-            (it as MainActivity).setBarTitle(BAR_TITLE)
         }
     }
 
@@ -115,7 +108,6 @@ class CommentsFragment : Fragment() {
     }
 
     companion object {
-        private const val BAR_TITLE = ""
         private const val SPACE = " "
     }
 }

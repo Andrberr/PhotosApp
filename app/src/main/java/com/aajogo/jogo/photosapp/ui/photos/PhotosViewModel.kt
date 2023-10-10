@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.aajogo.jogo.photosapp.domain.models.ImageData
 import com.aajogo.jogo.photosapp.domain.models.ImageModel
 import com.aajogo.jogo.photosapp.domain.repository.PhotosRepository
+import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -29,11 +30,17 @@ class PhotosViewModel @Inject constructor(
     private var _errorDelete = MutableLiveData<Boolean>()
     val errorDelete: LiveData<Boolean> = _errorDelete
 
+    private var _markers = MutableLiveData<List<Point>>()
+    val markers: LiveData<List<Point>> = _markers
+
+    private var _isSaved = MutableLiveData<Boolean>()
+    val isSaved: LiveData<Boolean> = _isSaved
+
     var base64Img: String? = null
     var deleteId = 0
     var deletePosition = 0
 
-    private val getHandler = CoroutineExceptionHandler { _, _ ->
+    private val getPhotosHandler = CoroutineExceptionHandler { _, _ ->
         viewModelScope.launch {
             _photos.value = repository.getPhotosFromDataBase()
         }
@@ -52,7 +59,7 @@ class PhotosViewModel @Inject constructor(
     }
 
     fun getPhotos() {
-        viewModelScope.launch(getHandler) {
+        viewModelScope.launch(getPhotosHandler) {
             _photos.value = repository.getPhotos()
         }
     }
@@ -80,6 +87,20 @@ class PhotosViewModel @Inject constructor(
     fun deletePhotoFromDataBase() {
         viewModelScope.launch {
             repository.deletePhotoFromDataBase(deleteId)
+        }
+    }
+
+    fun savePhotoAndMarkerToDataBase(photo: ImageModel) {
+        viewModelScope.launch {
+            repository.savePhotoToDataBase(photo)
+            _isSaved.value = true
+            _isSaved.value = false
+        }
+    }
+
+    fun getMarkers() {
+        viewModelScope.launch {
+            _markers.value = repository.getMarkers()
         }
     }
 }

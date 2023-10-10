@@ -9,6 +9,6 @@ class ImageRealm : RealmObject {
     var url: String = ""
     var date: String = ""
     var time: String = ""
-    var lat: Int = 0
-    var lng: Int = 0
+    var lat: Double = 0.0
+    var lng: Double = 0.0
 }
