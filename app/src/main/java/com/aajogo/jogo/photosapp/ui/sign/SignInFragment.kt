@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import com.aajogo.jogo.photosapp.R
 import com.aajogo.jogo.photosapp.databinding.FragmentSignInBinding
 import com.aajogo.jogo.photosapp.domain.models.UserData
+import com.aajogo.jogo.photosapp.ui.sign.viewpager.PagerFragmentDirections
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

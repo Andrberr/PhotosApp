@@ -10,7 +10,7 @@
     <string name="login_length_error">Length of login must be from 4 to 10!</string>
     <string name="password_length_error">Length of password must be 10!</string>
     <string name="login_error">Incorrect login!</string>
-    <string name="password_error">Incorrect password!</string>
+    <string name="password_error">Password must contain up and low letters, numbers</string>
     <string name="passwords_error">Lengths of passwords do not match!</string>
     <string name="empty_login">Login is empty!</string>
     <string name="empty_password">Password is empty!</string>

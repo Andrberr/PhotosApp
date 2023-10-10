@@ -1,4 +1,4 @@
-package com.aajogo.jogo.photosapp.ui.sign
+package com.aajogo.jogo.photosapp.ui.sign.viewpager
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/splashFragment"
-        android:name="com.aajogo.jogo.photosapp.SplashFragment"
+        android:name="com.aajogo.jogo.photosapp.ui.splash.SplashFragment"
         android:label=""
         tools:layout="@layout/fragment_splash" >
         <action
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/pagerFragment"
-        android:name="com.aajogo.jogo.photosapp.ui.sign.PagerFragment"
+        android:name="com.aajogo.jogo.photosapp.ui.sign.viewpager.PagerFragment"
         android:label=""
         tools:layout="@layout/view_pager">
         <action

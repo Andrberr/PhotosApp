@@ -52,10 +52,12 @@ class MapFragment : BaseFragment<FragmentMapBinding>() {
 
     private fun initObservers() {
         photosViewModel.markers.observe(viewLifecycleOwner) { markers ->
-            markers.forEach { point ->
-                putMarker(point)
+            if (markers.isNotEmpty()) {
+                markers.forEach { point ->
+                    putMarker(point)
+                }
+                moveCamera(markers[0])
             }
-            moveCamera(markers[0])
         }
         photosViewModel.errorUpload.observe(viewLifecycleOwner) { isError ->
             if (isError) {

@@ -1,4 +1,4 @@
-package com.aajogo.jogo.photosapp
+package com.aajogo.jogo.photosapp.ui.splash
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
