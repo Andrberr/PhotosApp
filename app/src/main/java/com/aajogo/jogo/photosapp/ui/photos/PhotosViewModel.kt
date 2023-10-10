@@ -38,7 +38,6 @@ class PhotosViewModel @Inject constructor(
 
     var base64Img: String? = null
     var deleteId = 0
-    var deletePosition = 0
 
     private val getPhotosHandler = CoroutineExceptionHandler { _, _ ->
         viewModelScope.launch {

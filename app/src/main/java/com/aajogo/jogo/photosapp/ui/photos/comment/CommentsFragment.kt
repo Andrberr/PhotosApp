@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.aajogo.jogo.photosapp.R
 import com.aajogo.jogo.photosapp.databinding.FragmentCommentsBinding
 import com.aajogo.jogo.photosapp.domain.models.ImageModel
-import com.aajogo.jogo.photosapp.ui.MainActivity
-import com.aajogo.jogo.photosapp.ui.photos.PhotosFragment
 import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,7 +43,7 @@ class CommentsFragment : Fragment() {
 
     private fun initObservers() {
         commentsViewModel.comments.observe(viewLifecycleOwner) { comments ->
-            commentsAdapter.setComments(comments)
+            commentsAdapter.submitList(comments)
         }
         commentsViewModel.photo.observe(viewLifecycleOwner) { photo ->
             commentsViewModel.imageId = photo.id
@@ -104,7 +102,7 @@ class CommentsFragment : Fragment() {
         findNavController().navigate(action)
     }
 
-    fun onBackPressed() {
+    private fun onBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {

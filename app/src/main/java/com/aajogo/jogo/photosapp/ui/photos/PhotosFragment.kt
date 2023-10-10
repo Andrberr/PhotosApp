@@ -52,9 +52,8 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
         photosAdapter.itemClick = { photo ->
             navigateToComments(photo)
         }
-        photosAdapter.itemDelete = { id, position ->
+        photosAdapter.itemDelete = { id ->
             binding.progressBar.isVisible = true
-            photosViewModel.deletePosition = position
             photosViewModel.deleteId = id
             photosViewModel.deletePhoto(id)
             photosViewModel.getPhotos()
@@ -86,7 +85,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
     private fun initObservers() {
         photosViewModel.photos.observe(viewLifecycleOwner) { photos ->
             binding.progressBar.isVisible = false
-            photosAdapter.setPhotos(photos)
+            photosAdapter.submitList(photos)
         }
         signViewModel.login.observe(viewLifecycleOwner) { login ->
             setMenuHeader(login)

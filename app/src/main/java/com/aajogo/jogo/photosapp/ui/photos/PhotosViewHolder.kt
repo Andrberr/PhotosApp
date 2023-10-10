@@ -10,9 +10,9 @@ import com.bumptech.glide.Glide
 class PhotosViewHolder(
     private val binding: PhotoLayoutBinding,
     private val itemClick: (photo: ImageModel) -> Unit,
-    private val itemDelete: (id: Int, position: Int) -> Unit,
+    private val itemDelete: (id: Int) -> Unit,
 ) : RecyclerView.ViewHolder(binding.root) {
-    fun bind(photo: ImageModel, position: Int) {
+    fun bind(photo: ImageModel) {
         Glide.with(itemView.context)
             .load(photo.url)
             .into(binding.imageView)
@@ -21,17 +21,17 @@ class PhotosViewHolder(
             itemClick(photo)
         }
         itemView.setOnLongClickListener {
-            showDeleteConfirmationDialog(photo.id, position)
+            showDeleteConfirmationDialog(photo.id)
             true
         }
     }
 
-    private fun showDeleteConfirmationDialog(id: Int, position: Int) {
+    private fun showDeleteConfirmationDialog(id: Int) {
         val alertDialogBuilder = AlertDialog.Builder(itemView.context)
         alertDialogBuilder.setMessage(itemView.context.getString(R.string.delete_question))
 
         alertDialogBuilder.setPositiveButton(itemView.context.getString(R.string.yes)) { _, _ ->
-            itemDelete(id, position)
+            itemDelete(id)
         }
 
         alertDialogBuilder.setNegativeButton(itemView.context.getString(R.string.no)) { dialog, _ ->
