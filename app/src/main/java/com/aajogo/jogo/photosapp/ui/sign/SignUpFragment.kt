@@ -50,10 +50,12 @@ class SignUpFragment : Fragment() {
 
     private fun initObserver() {
         viewModel.isSignUp.observe(viewLifecycleOwner) { isSignUp ->
-            if (isSignUp) {
+            if (isSignUp.first) {
                 navigateToPhotos()
             } else {
-                showText(getString(R.string.error_text))
+                val string = if (isSignUp.second == NETWORK_ERROR) R.string.network_error
+                else R.string.login_exists
+                showText(getString(string))
             }
         }
     }
@@ -116,6 +118,9 @@ class SignUpFragment : Fragment() {
     companion object {
         private const val PASSWORD_LENGTH = 10
         private const val LOGIN_MIN_LENGTH = 4
+        const val NETWORK_ERROR = 1
+        const val ALREADY_USE_ERROR = 2
+        const val SUCCESS = 3
         private val loginPattern = Pattern.compile("[a-z\\d_\\-.@]+")
     }
 }

@@ -32,6 +32,8 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
     private val photosAdapter = PhotosAdapter()
     private lateinit var photosLayoutManager: GridLayoutManager
 
+    var lastPhoto: ImageModel? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,6 +52,7 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
 
     private fun initViews() {
         photosAdapter.itemClick = { photo ->
+            photosViewModel.deleteId = ERROR_DELETE_ID
             navigateToComments(photo)
         }
         photosAdapter.itemDelete = { id ->
@@ -91,8 +94,11 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
             setMenuHeader(login)
         }
         photosViewModel.savePhoto.observe(viewLifecycleOwner) { photo ->
-            binding.progressBar.isVisible = false
-            photosViewModel.savePhotoToDataBase(photo)
+            if (lastPhoto != photo) {
+                binding.progressBar.isVisible = false
+                lastPhoto = photo
+                photosViewModel.savePhotoToDataBase(photo)
+            }
         }
         signViewModel.isMenuInitialized.observe(viewLifecycleOwner) { isInitialized ->
             if (isInitialized) {
@@ -169,5 +175,6 @@ class PhotosFragment : BaseFragment<FragmentPhotosBinding>() {
         private const val COLUMNS = 3
         private const val REQUEST_CODE = 123
         private const val DATA = "data"
+        const val ERROR_DELETE_ID = -1
     }
 }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.aajogo.jogo.photosapp.domain.models.ImageData
 import com.aajogo.jogo.photosapp.domain.models.ImageModel
 import com.aajogo.jogo.photosapp.domain.repository.PhotosRepository
+import com.aajogo.jogo.photosapp.ui.photos.PhotosFragment.Companion.ERROR_DELETE_ID
 import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -37,7 +38,7 @@ class PhotosViewModel @Inject constructor(
     val isSaved: LiveData<Boolean> = _isSaved
 
     var base64Img: String? = null
-    var deleteId = 0
+    var deleteId = ERROR_DELETE_ID
 
     private val getPhotosHandler = CoroutineExceptionHandler { _, _ ->
         viewModelScope.launch {
@@ -85,7 +86,7 @@ class PhotosViewModel @Inject constructor(
 
     fun deletePhotoFromDataBase() {
         viewModelScope.launch {
-            repository.deletePhotoFromDataBase(deleteId)
+            if (deleteId != ERROR_DELETE_ID) repository.deletePhotoFromDataBase(deleteId)
         }
     }
 

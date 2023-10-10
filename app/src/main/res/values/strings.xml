@@ -6,6 +6,8 @@
     <string name="password">Password</string>
     <string name="login_caps">LOG IN</string>
     <string name="signup_caps">SIGN UP</string>
+    <string name="login_exists">Login already exists!</string>
+    <string name="incorrect">Incorrect login or password!</string>
     <string name="error_text">Error! Try again later!</string>
     <string name="login_length_error">Length of login must be from 4 to 10!</string>
     <string name="password_length_error">Length of password must be 10!</string>

@@ -55,10 +55,12 @@ class SignInFragment : Fragment() {
 
     private fun initObserver() {
         viewModel.isSignIn.observe(viewLifecycleOwner) { isSignIn ->
-            if (isSignIn) {
+            if (isSignIn.first) {
                 navigateToPhotos()
             } else {
-                showText(getString(R.string.error_text))
+                val string = if (isSignIn.second == NETWORK_ERROR) R.string.network_error
+                else R.string.incorrect
+                showText(getString(string))
             }
         }
     }
@@ -76,5 +78,10 @@ class SignInFragment : Fragment() {
     override fun onDestroyView() {
         _binding = null
         super.onDestroyView()
+    }
+
+    companion object {
+        const val NETWORK_ERROR = 1
+        const val INCORRECT = 2
     }
 }

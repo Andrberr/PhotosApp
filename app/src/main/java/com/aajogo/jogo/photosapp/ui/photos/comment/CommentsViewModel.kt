@@ -74,6 +74,7 @@ class CommentsViewModel @Inject constructor(
     }
 
     fun setPhoto(photo: ImageModel) {
+        _comments.value = emptyList()
         _photo.value = photo
     }
 }
