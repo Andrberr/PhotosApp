@@ -1,33 +1,33 @@
 package com.aajogo.jogo.photosapp.ui.photos
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.aajogo.jogo.photosapp.databinding.PhotoLayoutBinding
 import com.aajogo.jogo.photosapp.domain.models.ImageModel
 
-class PhotosAdapter : RecyclerView.Adapter<PhotosViewHolder>() {
+class PhotosAdapter : ListAdapter<ImageModel, PhotosViewHolder>(DiffCallback()) {
 
-    private val photos = mutableListOf<ImageModel>()
     var itemClick: (photo: ImageModel) -> Unit = {}
-    var itemDelete: (id: Int, position: Int) -> Unit = { _, _ -> }
+    var itemDelete: (id: Int) -> Unit = {}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotosViewHolder {
         val binding = PhotoLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return PhotosViewHolder(binding, itemClick, itemDelete)
     }
 
-    override fun getItemCount(): Int = photos.size
-
     override fun onBindViewHolder(holder: PhotosViewHolder, position: Int) {
-        holder.bind(photos[position], position)
+        holder.bind(getItem(position))
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun setPhotos(photos: List<ImageModel>) {
-        this.photos.clear()
-        this.photos.addAll(photos)
-        notifyDataSetChanged()
+    class DiffCallback : DiffUtil.ItemCallback<ImageModel>() {
+        override fun areItemsTheSame(oldPhoto: ImageModel, newPhoto: ImageModel): Boolean {
+            return oldPhoto.id == newPhoto.id
+        }
+
+        override fun areContentsTheSame(oldPhoto: ImageModel, newPhoto: ImageModel): Boolean {
+            return newPhoto == oldPhoto
+        }
     }
 }
