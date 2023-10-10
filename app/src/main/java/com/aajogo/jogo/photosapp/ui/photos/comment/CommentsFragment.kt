@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -33,6 +34,7 @@ class CommentsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        onBackPressed()
         _binding = FragmentCommentsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -100,6 +102,16 @@ class CommentsFragment : Fragment() {
     private fun navigateToPhotos() {
         val action = CommentsFragmentDirections.actionCommentFragmentToPhotosFragment()
         findNavController().navigate(action)
+    }
+
+    fun onBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    navigateToPhotos()
+                }
+            })
     }
 
     override fun onDestroyView() {

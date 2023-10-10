@@ -5,4 +5,12 @@
     android:layout_height="match_parent"
     tools:context=".SplashFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/light_green"
+        android:indeterminateTintMode="src_atop" />
+
 </FrameLayout>
